@@ -1,8 +1,25 @@
+from mywebsite.settings import EMAIL_HOST_USER
+from django.core.mail import send_mail
+######################
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Question, Response
 from .forms import RegisterUserForm, LoginForm, NewQuestionForm, NewResponseForm, NewReplyForm
+################################################################
+from .Google import Create_Service
+import base64
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+################################################################
+CLIENT_SECRET_FILE = 'client_secret2.json'
+API_NAME = 'gmail'
+API_VERSION = 'v1'
+SCOPES = ['https://mail.google.com/']
+
+
+################################################################
 
 # Create your views here.
 
@@ -84,6 +101,20 @@ def questionPage(request, id):
                 response = response_form.save(commit=False)
                 response.user = request.user
                 response.question = Question(id=id)
+                q= Question.objects.get(id=id)
+                service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+                try:
+                    temp = "Check Out The Answer At:: https://quora-final.herokuapp.com/question/"+str(id)
+                    emailMsg = temp
+                    mimeMessage = MIMEMultipart()
+                    mimeMessage['to'] = q.author.email
+                    temp = q.title + " Got An Answer From:: " + response.user.username
+                    mimeMessage['subject'] = temp
+                    mimeMessage.attach(MIMEText(emailMsg, 'plain'))
+                    raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()
+                    message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
+                except Exception as e:
+                    print("error",e)
                 response.save()
                 return redirect('/question/'+str(id)+'#'+str(response.id))
         except Exception as e:
@@ -111,6 +142,20 @@ def replyPage(request):
                 reply.user = request.user
                 reply.question = Question(id=question_id)
                 reply.parent = Response(id=parent_id)
+                q= Question.objects.get(id=question_id)
+                service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+                try:
+                    temp = "Check Out The Answer At:: https://quora-final.herokuapp.com/question/"+str(question_id)
+                    emailMsg = temp
+                    mimeMessage = MIMEMultipart()
+                    mimeMessage['to'] = q.author.email
+                    temp = q.title + " Got An Answer From:: " + reply.user.username
+                    mimeMessage['subject'] = temp
+                    mimeMessage.attach(MIMEText(emailMsg, 'plain'))
+                    raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()
+                    message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
+                except Exception as e:
+                    print("error",e)
                 reply.save()
                 return redirect('/question/'+str(question_id)+'#'+str(reply.id))
         except Exception as e:
@@ -118,3 +163,4 @@ def replyPage(request):
             raise
 
     return redirect('index')
+
