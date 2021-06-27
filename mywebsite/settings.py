@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = '+q*p#-#2)u*p9t68n#tb)rn^$w7$wd8u)4qu^((61=2&lu8s8_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['quora-final.herokuapp.com','localhost','127.0.0.1']
 
 
 # Application definition
@@ -73,11 +74,23 @@ WSGI_APPLICATION = 'mywebsite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd9nb35c7dgt1ph',
+        'USER': 'ueehiaocqsvplg',
+        'PASSWORD': 'f0b1e0f7302649359c62624c18a335c8bcb5c26bf84077d1177b96648d6b0447',
+        'HOST': 'ec2-54-166-167-192.compute-1.amazonaws.com',
+        'PORT': 5432
     }
 }
 
@@ -119,3 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+     os.path.join(BASE_DIR, 'static')
+    ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
