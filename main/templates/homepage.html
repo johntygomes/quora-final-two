@@ -7,9 +7,7 @@
     <a href="{% url 'question' question.id %}">
       <p class="question-list-item-title">{{question.title}}</p>
       <p class="question-list-item-author">by {{question.author.username}}</p>
-      <p style="margin-top: 0px" class="question-list-item-date">
-        on {{question.created_at}}
-      </p>
+      <p style="margin-top: 0px">on {{question.created_at.date}}</p>
     </a>
   </div>
   {% endfor %}
