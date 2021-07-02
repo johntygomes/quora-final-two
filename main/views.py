@@ -121,8 +121,8 @@ def replyPage(request):
                 reply.question = Question(id=question_id)
                 reply.parent = Response(id=parent_id)
                 question_object = Question.objects.get(id=question_id)
-                mail = MailSender(question_object.author.email)
-                mail.sendUserAnswerNotification(question_object, reply.user)
+                # mail = MailSender(question_object.author.email)
+                # mail.sendUserAnswerNotification(question_object, reply.user)
                 reply.save()
                 return redirect('/question/'+str(question_id)+'#'+str(reply.id))
         except Exception as e:
