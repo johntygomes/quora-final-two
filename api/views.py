@@ -24,6 +24,7 @@ def questionlisttopfive(request,text_to_search):
     print(searchQuery)
     questiones = Question.objects.filter(title__icontains=searchQuery).order_by("-created_at")[:5]
     serializer = QuestionSerializer(questiones, many=True)
+    print(len(serializer.data))
     return Response(serializer.data)
 
 ##################################################################

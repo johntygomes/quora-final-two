@@ -8,14 +8,15 @@
   <div class="user-menu">
     <ul>
       <li>
+        {% if request.get_full_path == '/' %}
         <input
           id="searchInput"
           type="text"
           oninput="checkQuestions()"
           placeholder="Search Questions"
         />
+        {% endif %}
       </li>
-
       {% if user.is_authenticated %}
       <li><a href="{% url 'new-question' %}">Ask question</a></li>
       <li><a href="{% url 'logout' %}">Logout</a></li>
