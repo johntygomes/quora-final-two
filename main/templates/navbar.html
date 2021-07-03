@@ -1,3 +1,4 @@
+{% load static %}
 <nav class="navbar">
   <div class="main-menu">
     <ul>
@@ -6,6 +7,15 @@
   </div>
   <div class="user-menu">
     <ul>
+      <li>
+        <input
+          id="searchInput"
+          type="text"
+          oninput="checkQuestions()"
+          placeholder="Search Questions"
+        />
+      </li>
+
       {% if user.is_authenticated %}
       <li><a href="{% url 'new-question' %}">Ask question</a></li>
       <li><a href="{% url 'logout' %}">Logout</a></li>
@@ -15,4 +25,10 @@
       {% endif %}
     </ul>
   </div>
+  <script src="{% static 'js/search.js' %}"></script>
 </nav>
+<div class="container_api_question_results">
+  <div id="api_question_results">
+    <ul id="api_unordered_list"></ul>
+  </div>
+</div>
