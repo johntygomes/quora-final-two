@@ -4,6 +4,7 @@ const matchList = document.getElementById("match-list");
 const searchStates = async (searchText) => {
   const res = await fetch(
     "https://quora-final.herokuapp.com/api/question-list/"
+    // "http://127.0.0.1:8000/api/question-list/"
   );
   const states = await res.json();
 
@@ -11,7 +12,7 @@ const searchStates = async (searchText) => {
   let matches = states.filter((state) => {
     // const regex = new RegExp(`^${searchText}`, "gi");
     // return state.title.match(regex) || state.body.match(regex);
-    if (state.title.includes(searchText)) {
+    if (state.title.toLowerCase().includes(searchText.toLowerCase())) {
       return state.title;
     }
   });
