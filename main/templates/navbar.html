@@ -9,12 +9,7 @@
     <ul>
       <li>
         {% if request.get_full_path == '/' %}
-        <input
-          id="searchInput"
-          type="text"
-          oninput="checkQuestions()"
-          placeholder="Search Questions"
-        />
+        <input id="search" type="text" placeholder="Search Questions" />
         {% endif %}
       </li>
       {% if user.is_authenticated %}
@@ -26,10 +21,7 @@
       {% endif %}
     </ul>
   </div>
-  <script src="{% static 'js/search.js' %}"></script>
 </nav>
-<div class="container_api_question_results">
-  <div id="api_question_results">
-    <ul id="api_unordered_list"></ul>
-  </div>
-</div>
+<div id="match-list"></div>
+
+<script src="{% static 'js/search.js' %}"></script>

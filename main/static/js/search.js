@@ -1,28 +1,44 @@
-async function checkQuestions() {
-  searchValue = document.getElementById("searchInput").value;
-  var list = document.getElementById("api_unordered_list");
-  console.log(list.getElementsByTagName("li").length);
-  if (list.getElementsByTagName("li").length !== 0) {
-    for (var i = 0; i < list.getElementsByTagName("li").length; i++) {
-      list.removeChild(list.childNodes[i]);
+const search = document.getElementById("search");
+const matchList = document.getElementById("match-list");
+
+const searchStates = async (searchText) => {
+  const res = await fetch("http://127.0.0.1:8000/api/question-list/");
+  const states = await res.json();
+
+  // Get Matches to current text inputData
+  let matches = states.filter((state) => {
+    // const regex = new RegExp(`^${searchText}`, "gi");
+    // return state.title.match(regex) || state.body.match(regex);
+    if (state.title.includes(searchText)) {
+      return state.title;
     }
-  }
-  const response = await fetch(
-    // "http://127.0.0.1:8000/api/question-list-top-five/" +
-    "https://quora-final.herokuapp.com/api/question-list-top-five/" +
-      new URLSearchParams({
-        search_query: searchValue,
-      })
-  );
-  const data = await response.json();
-
-  data.forEach((element) => {
-    // console.log(element.title);
-    var node = document.createElement("LI"); // Create a <li> node
-    const temp = element.id + ":: " + element.title;
-    var textnode = document.createTextNode(temp); // Create a text node
-
-    node.appendChild(textnode); // Append the text to <li>
-    list.appendChild(node);
   });
-}
+
+  if (searchText.length === 0) {
+    matches = [];
+    matchList.innerHTML = "";
+  }
+
+  outputHtml(matches);
+  // console.log(matches);
+};
+
+//Show Results In Html
+const outputHtml = (matches) => {
+  if (matches.length > 0) {
+    const html = matches
+      .map(
+        (match) => `
+      <div class = "card card-body mb-1">
+        <h4><a href="http://127.0.0.1:8000/question/${match.id}" target="_blank">${match.title}</a></h4>
+        <small>${match.body}</small>
+      </div>
+    `
+      )
+      .join("");
+    console.log(html);
+    matchList.innerHTML = html;
+  }
+};
+
+search.addEventListener("input", () => searchStates(search.value));

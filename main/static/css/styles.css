@@ -231,14 +231,3 @@ blockquote {
   border-radius: 4px;
   cursor: pointer;
 }
-
-.container_api_question_results {
-  display: flex;
-  position: relative;
-  border: 1px solid black;
-  justify-content: center;
-  align-items: center;
-}
-.api_question_results_list_item {
-  border: 1px solid red;
-}
