@@ -1,0 +1,78 @@
+{% extends 'layouts/page.html' %} {% block content %} {% load static %}
+<div class="page login-page">
+  <h1 class="title">REGISTER</h1>
+  <div class="container">
+    <div id="username_container" class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Username</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        placeholder="username"
+        onblur="check_username()"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label"
+        >Email address</label
+      >
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        placeholder="name@example.com"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        placeholder="choose a strong password"
+      />
+      <!-- <i class="bi bi-eye-slash" id="togglePassword"></i> -->
+    </div>
+    <div
+      style="
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      "
+      id="messages"
+      class="mb-3"
+    ></div>
+    <div id="register_button_container" class="mb-3">
+      <input
+        type="submit"
+        class="form-control btn btn-success"
+        id="login_button"
+        value="Register"
+        onclick="register()"
+      />
+    </div>
+    <div style="margin: auto; display: none" class="loader" id="loader"></div>
+  </div>
+  <h2 style="margin: auto">OR</h2>
+  <div id="create_account_container" class="container">
+    <div class="mb-3">
+      <input
+        type="submit"
+        class="form-control btn btn-primary mt-2"
+        id="create_account"
+        value="LOGIN"
+        onclick="go_to_login()"
+      />
+    </div>
+  </div>
+  <div class="google-btn-container">
+    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+  </div>
+</div>
+<script src="{% static 'js/register.js' %}"></script>
+<script src="{% static 'js/google.js' %}"></script>
+<script src="{% static 'js/register_toolkit/usernameblur.js' %}"></script>
+{% endblock %}

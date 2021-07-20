@@ -2,6 +2,7 @@ from main.models import Question
 from .serializers import QuestionSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import generics,status
 ################################################################
 @api_view(['GET'])
 def QuestionView(request):
@@ -26,5 +27,3 @@ def questionlisttopfive(request,text_to_search):
     serializer = QuestionSerializer(questiones, many=True)
     print(len(serializer.data))
     return Response(serializer.data)
-
-##################################################################

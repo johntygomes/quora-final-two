@@ -12,12 +12,16 @@
         <input id="search" type="text" placeholder="Search Questions" />
         {% endif %}
       </li>
-      {% if user.is_authenticated %}
+      {% if MAIN_USER_IS_AUTHENTICATED %}
       <li><a href="{% url 'new-question' %}">Ask question</a></li>
-      <li><a href="{% url 'logout' %}">Logout</a></li>
+           {% if GOOGLE_AUTHENTICATED %}
+               <li><button onclick="logoutGoogle()">LogoutGoogle</button></li>
+            {% else %}
+               <li><a href="{% url 'logout-new' %}">Logout</a></li>
+          {% endif %}
       {% else %}
-      <li><a href="{% url 'login' %}">Login</a></li>
-      <li><a href="{% url 'register' %}">Register</a></li>
+      <li><a href="{% url 'login-new' %}">Login</a></li>
+      <li><a href="{% url 'register-new' %}">Register</a></li>
       {% endif %}
     </ul>
   </div>
@@ -25,3 +29,4 @@
 <div id="match-list"></div>
 
 <script src="{% static 'js/search.js' %}"></script>
+<script src="{% static 'js/google.js' %}"></script>

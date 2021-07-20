@@ -2,6 +2,7 @@
 <div class="page new-question-page">
   <h1 class="title">New question</h1>
 
+  {% if MAIN_USER_IS_AUTHENTICATED %}
   <form method="POST" action="" class="new-question-form">
     {% csrf_token %}
     <div class="fieldWrapper">
@@ -16,5 +17,6 @@
     </div>
     <input type="submit" value="Submit" class="submit-button" />
   </form>
+  {% endif %}
 </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 from mywebsite.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
 ##################################################################
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
@@ -9,6 +10,9 @@ from .forms import RegisterUserForm, LoginForm, NewQuestionForm, NewResponseForm
 ##################################################################
 from utils.mail.mail_sender import MailSender
 ################################################################
+from .models import User
+################################################################
+from authentication.serializers import setAuthenticationFalse,GOOGLE_AUTHENTICATED
 
 # Create your views here.
 
@@ -33,6 +37,7 @@ def registerPage(request):
 
 def loginPage(request):
     form = LoginForm()
+    from authentication.serializers import MAIN_USER_IS_AUTHENTICATED,GOOGLE_AUTHENTICATED
 
     if request.method == 'POST':
         try:
@@ -44,42 +49,50 @@ def loginPage(request):
         except Exception as e:
             print(e)
             raise
+    # context = {'form': form}
+    context = {'MAIN_USER_IS_AUTHENTICATED':MAIN_USER_IS_AUTHENTICATED,
+                'GOOGLE_AUTHENTICATED':GOOGLE_AUTHENTICATED}
 
-    context = {'form': form}
     return render(request, 'login.html', context)
 
-@login_required(login_url='register')
+# @login_required(login_url='register')
 def logoutPage(request):
-    logout(request)
-    return redirect('login')
+    setAuthenticationFalse()
+    return redirect('login-new')
 
-@login_required(login_url='register')
+# @login_required(login_url='register')
 def newQuestionPage(request):
+    from authentication.serializers import MAIN_USER_IS_AUTHENTICATED, MAIN_USER_ID
     form = NewQuestionForm()
-
     if request.method == 'POST':
         try:
             form = NewQuestionForm(request.POST)
             if form.is_valid():
                 question = form.save(commit=False)
-                question.author = request.user
+                question.author = User.objects.get(id=MAIN_USER_ID)
                 question.save()
                 return redirect('index')
         except Exception as e:
             print(e)
             raise
 
-    context = {'form': form}
+    context = {'form': form,'MAIN_USER_IS_AUTHENTICATED':MAIN_USER_IS_AUTHENTICATED}
     return render(request, 'new-question.html', context)
 
+
 def homePage(request):
+    from authentication.serializers import MAIN_USER_IS_AUTHENTICATED,GOOGLE_AUTHENTICATED
     questions = Question.objects.all().order_by('-created_at')
     context = {
-        'questions': questions
+        'questions': questions,
+        'MAIN_USER_IS_AUTHENTICATED':MAIN_USER_IS_AUTHENTICATED,
+        'GOOGLE_AUTHENTICATED':GOOGLE_AUTHENTICATED
     }
     return render(request, 'homepage.html', context)
 
+@csrf_exempt
 def questionPage(request, id):
+    from authentication.serializers import MAIN_USER_IS_AUTHENTICATED, MAIN_USER_ID
     response_form = NewResponseForm()
     reply_form = NewReplyForm()
 
@@ -88,7 +101,7 @@ def questionPage(request, id):
             response_form = NewResponseForm(request.POST)
             if response_form.is_valid():
                 response = response_form.save(commit=False)
-                response.user = request.user
+                response.user = User.objects.get(id=MAIN_USER_ID)
                 response.question = Question(id=id)
                 question_object = Question.objects.get(id=id)
                 mail = MailSender(question_object.author.email)
@@ -104,11 +117,12 @@ def questionPage(request, id):
         'question': question,
         'response_form': response_form,
         'reply_form': reply_form,
+        'MAIN_USER_IS_AUTHENTICATED': MAIN_USER_IS_AUTHENTICATED
     }
     return render(request, 'question.html', context)
 
 
-@login_required(login_url='register')
+# @login_required(login_url='register')
 def replyPage(request):
     if request.method == 'POST':
         try:
@@ -130,4 +144,18 @@ def replyPage(request):
             raise
 
     return redirect('index')
+
+def emailverified(request):
+    return render(request, 'email-verified.html')
+
+def emailverificationfailed(request):
+    return render(request, 'email-verification-failed.html')
+
+
+def loginNew(request):
+    return render(request, 'login-new.html')
+
+def registerNew(request):
+    return render(request, 'register-new.html')
+    
 

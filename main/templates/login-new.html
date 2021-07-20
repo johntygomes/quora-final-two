@@ -1,0 +1,60 @@
+{% extends 'layouts/page.html' %} {% block content %} {% load static %}
+<div class="page login-page">
+  <h1 class="title">LOGIN</h1>
+  <div class="container">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label"
+        >Email address</label
+      >
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        placeholder="name@example.com"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        placeholder="choose a strong password"
+      />
+    </div>
+    <div
+      style="margin: auto; display: flex; justify-content: center"
+      id="messages"
+      class="mb-3"
+    ></div>
+    <div id="login_button_container" class="mb-3">
+      <input
+        type="submit"
+        class="form-control btn btn-success"
+        id="login_button"
+        value="Login"
+        onclick="login()"
+      />
+    </div>
+  </div>
+  <div style="margin: auto; display: none" class="loader" id="loader"></div>
+  <h2 style="margin: auto">OR</h2>
+  <div id="create_account_container" class="container">
+    <div class="mb-3">
+      <input
+        type="submit"
+        class="form-control btn btn-primary mt-2"
+        id="create_account"
+        value="Create Account"
+        onclick="go_to_register()"
+      />
+    </div>
+    <!-- <p>{{ self.request.user }}</p> -->
+  </div>
+  <div class="google-btn-container">
+    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+  </div>
+</div>
+<script src="{% static 'js/login.js' %}"></script>
+<script src="{% static 'js/google.js' %}"></script>
+{% endblock %}
