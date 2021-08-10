@@ -27,7 +27,7 @@ SECRET_KEY = '+q*p#-#2)u*p9t68n#tb)rn^$w7$wd8u)4qu^((61=2&lu8s8_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['quora-final.herokuapp.com','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['quora-final-two.herokuapp.com','quora-final.herokuapp.com','localhost','127.0.0.1']
 
 
 # Application definition
