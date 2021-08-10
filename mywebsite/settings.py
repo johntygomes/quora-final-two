@@ -100,7 +100,7 @@ WSGI_APPLICATION = 'mywebsite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -111,7 +111,7 @@ DATABASES = {
         'PORT': 5432
     }
 }
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -123,6 +123,16 @@ DATABASES = {
     }
 }
 '''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd8qcraqbpo5usg',
+        'USER': 'lxqbwpcraxvizw',
+        'PASSWORD': 'a6093ad349e7495dccedebfbb819ae97fd972dc213c662f705790f4b08bc3ab7',
+        'HOST': 'ec2-3-218-149-60.compute-1.amazonaws.com',
+        'PORT': 5432
+    }
+}
 AUTH_USER_MODEL = 'main.User'
 REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
