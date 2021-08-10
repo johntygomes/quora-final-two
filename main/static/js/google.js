@@ -28,11 +28,28 @@ function loginGoogle() {
       console.log(error);
     });
 }
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log("User signed out.");
+  });
+  auth2.disconnect();
+}
+
+function onLoad() {
+  gapi.load("auth2", function () {
+    gapi.auth2.init();
+  });
+}
 
 function logoutGoogle() {
   console.log("Logout Google called");
-  document.location.href =
-    "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:8000/login-new";
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log("User signed out.");
+  });
+  // document.location.href =
+  // "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:8000/login-new";
   // "https://www.google.com/accounts/Logout?continue=http://localhost:8000/login-new";
 
   fetch("http://localhost:8000/social-auth/logout-google/", {})

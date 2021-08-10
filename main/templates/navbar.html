@@ -14,12 +14,12 @@
       </li>
       {% if MAIN_USER_IS_AUTHENTICATED %}
       <li><a href="{% url 'new-question' %}">Ask question</a></li>
-           {% if GOOGLE_AUTHENTICATED %}
-               <li><button onclick="logoutGoogle()">LogoutGoogle</button></li>
-            {% else %}
-               <li><a href="{% url 'logout-new' %}">Logout</a></li>
-          {% endif %}
+      {% if GOOGLE_AUTHENTICATED %}
+      <li><button onclick="logoutGoogle()">LogoutGoogle</button></li>
+      <li><a href="#" onclick="signOut();">Sign out</a></li>
       {% else %}
+      <li><a href="{% url 'logout-new' %}">Logout</a></li>
+      {% endif %} {% else %}
       <li><a href="{% url 'login-new' %}">Login</a></li>
       <li><a href="{% url 'register-new' %}">Register</a></li>
       {% endif %}
